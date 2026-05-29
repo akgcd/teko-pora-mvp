@@ -1,0 +1,6 @@
+{
+  "name": "Teko Porã",
+  "description": "Repositório comunitário de saberes ancestrais e periféricos para o design regenerativo.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
