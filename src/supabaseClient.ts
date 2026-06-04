@@ -1,18 +1,13 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Usando import.meta.env para Vite
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || import.meta.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+// Valores diretos e fixos
+const supabaseUrl = "https://plmzqgsskjtripdwmwos.supabase.co";
+const supabaseKey = "sb_publishable_VMQL62AY1EdvkBPnpuDDyw_nHG6h_";
 
-let supabase;
+export const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: {
+    persistSession: false,
+  },
+});
 
-if (!supabaseUrl || !supabaseKey) {
-  console.error("Variaveis nao encontradas, usando fallback");
-  const fallbackUrl = "https://plmzqgsskjtripdwmwos.supabase.co";
-  const fallbackKey = "sb_publishable_VMQL62AY1EdvkBPnpuDDyw_nHG6h_";
-  supabase = createClient(fallbackUrl, fallbackKey);
-} else {
-  supabase = createClient(supabaseUrl, supabaseKey);
-}
-
-export { supabase };
+console.log("Supabase iniciado com sucesso");
