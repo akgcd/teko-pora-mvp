@@ -1,15 +1,14 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Usando a URL correta do Supabase (com .co, não .com)
-const supabaseUrl = "https://plmzqgsskjtripdwmwos.supabase.co";
-const supabaseAnonKey = "sb_publishable_VMQL62AY1EdvkBPnpuDDyw_nHG6h_";
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-// Configuração adicional para evitar CORS
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+if (!supabaseUrl || !supabaseKey) {
+  console.error("Faltando variáveis de ambiente do Supabase");
+}
+
+export const supabase = createClient(supabaseUrl || "", supabaseKey || "", {
   auth: {
     persistSession: false,
-    autoRefreshToken: false,
   },
 });
-
-console.log("Supabase configurado com:", supabaseUrl);
