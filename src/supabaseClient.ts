@@ -1,13 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Valores diretos e fixos
-const supabaseUrl = "https://plmzqgsskjtripdwmwos.supabase.co";
-const supabaseKey = "sb_publishable_VMQL62AY1EdvkBPnpuDDyw_nHG6h_";
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-export const supabase = createClient(supabaseUrl, supabaseKey, {
+export const supabase = createClient(supabaseUrl || "", supabaseKey || "", {
   auth: {
     persistSession: false,
   },
 });
-
-console.log("Supabase iniciado com sucesso");
