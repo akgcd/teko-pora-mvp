@@ -21,8 +21,6 @@ import { Saber } from "./types";
 import WelcomeScreen from "./components/WelcomeScreen";
 import ShareForm from "./components/ShareForm";
 import SaberDetail from "./components/SaberDetail";
-// Importação do cliente do Supabase para conexão direta sem depender de /api
-import { supabase } from "./supabaseClient";
 
 export default function App() {
   const [screen, setScreen] = useState<"welcome" | "hub">("welcome");
@@ -46,28 +44,25 @@ export default function App() {
   // Nuvem de Palavras Dinâmica gerada a partir dos dados existentes
   const [topWords, setTopWords] = useState<string[]>([]);
 
-  // Carregar dados direto do Supabase
   const fetchSaberes = async (selectId?: string) => {
     try {
-      // Busca a tabela 'saberes' direto do seu banco de dados
-      const { data, error } = await supabase
-        .from("saberes")
-        .select("*")
-        .order("createdAt", { ascending: false });
+      const response = await fetch("/api/saberes");
+      const json = await response.json();
 
-      if (error) throw error;
+      if (!response.ok) {
+        throw new Error(json.error || "Falha ao carregar saberes.");
+      }
 
-      if (data) {
-        setSaberes(data);
-        gerarNuvemPalavras(data);
-        
-        if (selectId) {
-          const updated = data.find((s: Saber) => s.id === selectId);
-          if (updated) setSelectedSaber(updated);
-        }
+      const data: Saber[] = json.saberes || [];
+      setSaberes(data);
+      gerarNuvemPalavras(data);
+
+      if (selectId) {
+        const updated = data.find((s: Saber) => s.id === selectId);
+        if (updated) setSelectedSaber(updated);
       }
     } catch (err) {
-      console.error("Erro ao carregar saberes do Supabase:", err);
+      console.error("Erro ao carregar saberes:", err);
     }
   };
 

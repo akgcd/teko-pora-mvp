@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { CheckCircle2 } from 'lucide-react';
-import { supabase } from '../supabaseClient';
 
 interface ShareFormProps {
   onSuccess: (newSaber: any) => void;
@@ -29,26 +28,29 @@ export default function ShareForm({ onSuccess, onCancel }: ShareFormProps) {
     setError(null);
 
     try {
-      const { data, error: supabaseError } = await supabase
-        .from('saberes')
-        .insert([
-          {
-            elderName,
-            territory,
-            problemSolved,
-            materialType,
-            link: link || null,
-            description,
-          }
-        ])
-        .select()
-        .single();
+      const response = await fetch('/api/saberes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          elderName,
+          territory,
+          problemSolved,
+          materialType,
+          link: link || '',
+          description,
+        }),
+      });
 
-      if (supabaseError) throw supabaseError;
+      const json = await response.json();
+      if (!response.ok) {
+        throw new Error(json.error || 'Não foi possível enviar sua contribuição.');
+      }
 
       setSubmitted(true);
       setTimeout(() => {
-        onSuccess(data);
+        onSuccess(json.saber);
       }, 1500);
     } catch (err: any) {
       setError(err.message || "Não foi possível enviar sua contribuição.");

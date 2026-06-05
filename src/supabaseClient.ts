@@ -1,13 +1,5 @@
-import { createClient } from '@supabase/supabase-js';
+// O frontend agora usa a API local em /api/saberes.
+// Este arquivo foi mantido apenas para referência e não deve ser usado em produção.
 
-// Chave direta - Service Role Key
-const supabaseUrl = "https://plmzqgsskjtripdwmwos.supabase.co";
-const supabaseKey = "sb_secret_Qq8DlZTjYUr0gI749fN_kg_NUZgrygq";
+export const supabase = null as any;
 
-export const supabase = createClient(supabaseUrl, supabaseKey, {
-  auth: {
-    persistSession: false,
-  },
-});
-
-console.log("Supabase inicializado com chave direta");
